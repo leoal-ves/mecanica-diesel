@@ -3,6 +3,7 @@ package com.projeto2.mecanica_diesel.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projeto2.mecanica_diesel.model.Cliente;
@@ -10,6 +11,7 @@ import com.projeto2.mecanica_diesel.repository.ClienteRepository;
 
 @Service
 public class ClienteService {
+    @Autowired
     private final ClienteRepository clienteRepository;
 
     public ClienteService(ClienteRepository clienteRepository) {
@@ -28,17 +30,20 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public Cliente updateCliente(Long id, Cliente clienteDetails) {
+    public Optional<Cliente> updateCliente(Long id, Cliente clienteDetails) {
         Cliente cliente = clienteRepository.findById(id).orElse(null);
         if (cliente != null) {
             cliente.setNome(clienteDetails.getNome());
             cliente.setEmail(clienteDetails.getEmail());
-            return clienteRepository.save(cliente);
+            return Optional.of(clienteRepository.save(cliente));
         }
-        return null;
+        return Optional.empty();
     }
 
     public void deleteCliente(Long id) {
+        if(!clienteRepository.existsById(id)) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
         clienteRepository.deleteById(id);
     }
 

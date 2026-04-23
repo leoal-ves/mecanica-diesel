@@ -1,0 +1,21 @@
+
+  body {
+    margin: 0;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center;     /* vertical */
+
+    background-color: #f0f0f0;
+  }
+
+  .login-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }

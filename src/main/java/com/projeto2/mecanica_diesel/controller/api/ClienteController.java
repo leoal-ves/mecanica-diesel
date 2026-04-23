@@ -1,6 +1,8 @@
-package com.projeto2.mecanica_diesel.controller;
+package com.projeto2.mecanica_diesel.controller.api;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.projeto2.mecanica_diesel.model.Cliente;
@@ -32,9 +34,26 @@ public class ClienteController {
     }
 
     @PostMapping()
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        clienteService.createCliente(cliente);
-        return ResponseEntity.ok(cliente);
+    public ResponseEntity<?> criarCliente(@RequestBody Cliente cliente) {
+        if (clienteService.createCliente(cliente) != null) {
+            return ResponseEntity.ok(Map.of("message", "Cliente criado com sucesso"));
+        } else {
+            return ResponseEntity.status(500).body(Map.of("message", "Erro ao criar cliente"));
+        }
+    }
+    
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+        return clienteService.updateCliente(id, cliente)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarCliente(@PathVariable Long id) {
+        clienteService.deleteCliente(id);
+        return ResponseEntity.ok(Map.of("message", "Cliente deletado com sucesso"));
     }
 
 }

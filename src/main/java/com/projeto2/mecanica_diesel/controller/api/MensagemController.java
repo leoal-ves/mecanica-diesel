@@ -1,4 +1,4 @@
-package com.projeto2.mecanica_diesel.controller;
+package com.projeto2.mecanica_diesel.controller.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

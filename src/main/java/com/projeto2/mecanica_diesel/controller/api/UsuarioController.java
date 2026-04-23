@@ -1,13 +1,14 @@
-package com.projeto2.mecanica_diesel.controller;
+package com.projeto2.mecanica_diesel.controller.api;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projeto2.mecanica_diesel.model.Usuario;
 import com.projeto2.mecanica_diesel.service.UsuarioService;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -16,10 +17,10 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping
-    public String login() {
+    @PostMapping("/login")
+    public String login(Usuario usuario) {
         // Lógica de autenticação aqui
-        return "Login bem-sucedido!";
+        return "Login bem-sucedido! " + usuario.getEmail() + "senha" + usuario.getSenha();
     }
 
 }
