@@ -1,7 +1,6 @@
 package com.projeto2.mecanica_diesel.controller;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.projeto2.mecanica_diesel.model.Cliente;
@@ -31,10 +30,11 @@ public class ClienteController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @PostMapping()
     public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        
+        clienteService.createCliente(cliente);
+        return ResponseEntity.ok(cliente);
     }
 
 }
