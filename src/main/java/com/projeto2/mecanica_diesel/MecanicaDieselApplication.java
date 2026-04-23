@@ -1,4 +1,4 @@
-package com.example.mecanica_diesel;
+package com.projeto2.mecanica_diesel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
