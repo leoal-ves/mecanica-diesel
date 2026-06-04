@@ -13,9 +13,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
-    public Optional<Usuario> login(String email, String senha) {
-        return repository.findByEmail(email)
-                .filter(u -> u.getSenha().equals(senha));
+    public Optional<Usuario> login(Usuario usuario) {
+        return repository.findByEmail(usuario.getEmail())
+                .filter(u -> u.getSenha().equals(usuario.getSenha()));
     }
 
 }

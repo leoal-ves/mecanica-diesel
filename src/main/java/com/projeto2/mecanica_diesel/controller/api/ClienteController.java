@@ -8,18 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import com.projeto2.mecanica_diesel.model.Cliente;
 import com.projeto2.mecanica_diesel.service.ClienteService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService clienteService;
-
-    public ClienteController(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
-
-    public ClienteService getClienteService() {
-        return clienteService;
-    }
 
     @GetMapping()
     public List<Cliente> getClientes() {
