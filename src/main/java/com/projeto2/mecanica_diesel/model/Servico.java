@@ -2,6 +2,7 @@ package com.projeto2.mecanica_diesel.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,4 +17,6 @@ public class Servico {
     private Long id_cliente;
     private Long id_veiculo;
     private String descricao;
+    private LocalDate dataServico;
+    private Boolean avisoEnviado;
 }
