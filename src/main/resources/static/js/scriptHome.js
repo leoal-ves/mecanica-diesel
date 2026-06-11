@@ -1,3 +1,6 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
+
 document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.getElementById('tabelaHomeBody');
     
@@ -11,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dataAlvo.setFullYear(dataAlvo.getFullYear() - 1);
     const dataFormatada = dataAlvo.toISOString().split('T')[0];
 
-    fetch('/api/servicos')
+    fetch('/api/servicos', { headers: { 'Authorization': `Bearer ${token}` } })
         .then(response => response.json())
         .then(data => {
             tbody.innerHTML = '';

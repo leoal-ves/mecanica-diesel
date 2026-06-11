@@ -1,3 +1,6 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
+
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const idServico = urlParams.get('id');
@@ -6,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const veiculoSelect = document.getElementById('veiculoSelect');
     const formServico = document.getElementById('formServico');
 
-    fetch('/api/clientes')
+    fetch('/api/clientes', { headers: { 'Authorization': `Bearer ${token}` } })
         .then(res => res.json())
         .then(data => {
             data.forEach(c => {
@@ -25,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function loadVehicles(clienteId, selectedVeiculoId = null) {
         veiculoSelect.innerHTML = '<option value="">Selecione um veículo...</option>';
         if (clienteId) {
-            fetch(`/api/veiculos/cliente/${clienteId}`)
+            fetch(`/api/veiculos/cliente/${clienteId}`, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then(res => res.json())
                 .then(data => {
                     data.forEach(v => {
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function loadServiceData(id) {
-        const res = await fetch(`/api/servicos/${id}`);
+        const res = await fetch(`/api/servicos/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         
         clienteSelect.value = data.id_cliente;
@@ -62,7 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch(url, {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify(servico)
         }).then(() => {
             alert('Serviço salvo com sucesso!');

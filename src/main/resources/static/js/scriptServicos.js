@@ -1,3 +1,6 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
+
 document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.getElementById('tabelaServicosBody');
     const filtroData = document.getElementById('filtroData');
@@ -6,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let listaServicos = []; 
 
     async function carregarServicos() {
-        const res = await fetch('/api/servicos');
+        const res = await fetch('/api/servicos', { headers: { 'Authorization': `Bearer ${token}` } });
         listaServicos = await res.json();
         renderizarTabela(listaServicos);
     }
@@ -58,8 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function excluirServico(id) {
     if (confirm('Tem certeza que deseja excluir este serviço?')) {
-        fetch(`/api/servicos/${id}`, { method: 'DELETE' })
-            .then(() => location.reload());
+        fetch(`/api/servicos/${id}`, { 
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        }).then(() => location.reload());
     }
 }
 

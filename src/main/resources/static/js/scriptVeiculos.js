@@ -1,3 +1,6 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
+
 document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.getElementById('tabelaVeiculosBody');
     const filtro = document.getElementById('filtroCliente');
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    fetch('/api/clientes')
+    fetch('/api/clientes', { headers: { 'Authorization': `Bearer ${token}` } })
         .then(res => res.json())
         .then(data => {
             data.forEach(c => {
@@ -27,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     async function carregarVeiculos(url) {
-        const res = await fetch(url);
+        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         renderTabela(data);
     }
@@ -49,10 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (e.target.classList.contains('btn-excluir')) {
             if (confirm('Tem certeza?')) {
-                const res = await fetch(`/api/veiculos/${id}`, { method: 'DELETE' });
+                const res = await fetch(`/api/veiculos/${id}`, { 
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 if (res.ok) {
                     alert('Veículo excluído!');
-                    // Recarrega a tabela atual (respeitando o filtro atual)
                     const url = filtro.value ? `/api/veiculos/cliente/${filtro.value}` : '/api/veiculos';
                     carregarVeiculos(url);
                 }

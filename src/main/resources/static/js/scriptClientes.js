@@ -1,6 +1,11 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
 
 async function fetchClientes() {
-    const response = await fetch('/api/clientes');
+    const response = await fetch('/api/clientes', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
     if (response.ok) {
         const clientes = await response.json();
         const tabelaBody = document.getElementById('tabelaClientesBody');
@@ -20,9 +25,10 @@ async function fetchClientes() {
             tabelaBody.innerHTML += linha;
         });
     } else {
-        alert('Falha ao buscar clientes.');
+        alert('Falha ao buscar clientes. Sua sessão pode ter expirado.');
     }
 }
+
 document.addEventListener('DOMContentLoaded', () => { fetchClientes(); });
 
 document.getElementById('tabelaClientesBody').addEventListener('click', async (event) => {
@@ -31,7 +37,6 @@ document.getElementById('tabelaClientesBody').addEventListener('click', async (e
         window.location.href = `/clientes/novo?id=${id}`;
     }
     if (event.target.classList.contains('btn-excluir')) {
-
         if (!confirm('Tem certeza que deseja excluir este cliente?')) {
             return;
         }
@@ -40,12 +45,12 @@ document.getElementById('tabelaClientesBody').addEventListener('click', async (e
 
         try {
             const response = await fetch(`/api/clientes/${clienteId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
             });
 
             if (response.ok) {
                 alert('Cliente excluído com sucesso!');
-
                 fetchClientes();
             } else {
                 alert('Erro ao excluir o cliente do servidor.');

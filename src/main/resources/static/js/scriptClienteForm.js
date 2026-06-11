@@ -1,3 +1,6 @@
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/';
+
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const idCliente = urlParams.get('id');
@@ -7,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (idCliente) {
         if (titulo) titulo.innerText = "Editar Cliente";
         
-        fetch(`/api/clientes/${idCliente}`)
+        fetch(`/api/clientes/${idCliente}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => {
                 if (!res.ok) throw new Error("Erro ao buscar dados do cliente");
                 return res.json();
@@ -33,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch(url, { 
                 method: method, 
-                headers: { 'Content-Type': 'application/json' }, 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }, 
                 body: JSON.stringify(dados) 
             });
 
