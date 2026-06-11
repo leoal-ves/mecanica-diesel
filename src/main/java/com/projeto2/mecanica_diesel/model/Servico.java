@@ -19,4 +19,5 @@ public class Servico {
     private String descricao;
     private LocalDate dataServico;
     private Boolean avisoEnviado;
+    private Integer quilometragem;
 }

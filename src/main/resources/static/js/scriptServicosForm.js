@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clienteSelect.value = data.id_cliente;
         document.getElementById('descricao').value = data.descricao;
         document.getElementById('dataServico').value = data.dataServico;
+        document.getElementById('quilometragem').value = data.quilometragem || '';
         
         loadVehicles(data.id_cliente, data.id_veiculo);
     }
@@ -56,11 +57,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const method = idServico ? 'PUT' : 'POST';
         const url = idServico ? `/api/servicos/${idServico}` : '/api/servicos';
         
+        const kmInput = document.getElementById('quilometragem').value;
+        const kmValor = kmInput ? parseInt(kmInput) : null;
+        
         const servico = {
             id_cliente: clienteSelect.value,
             id_veiculo: veiculoSelect.value,
             descricao: document.getElementById('descricao').value,
             dataServico: document.getElementById('dataServico').value,
+            quilometragem: kmValor
         };
 
         fetch(url, {
