@@ -7,6 +7,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.projeto2.mecanica_diesel.model.Cliente;
 import com.projeto2.mecanica_diesel.model.Servico;
@@ -50,18 +53,32 @@ public class AlertaOleoService {
     }
 
     private void enviarEmail(String emailDestino, String nomeCliente, String placa, String modelo) {
-        SimpleMailMessage mensagem = new SimpleMailMessage();
-        mensagem.setTo(emailDestino);
-        
-        mensagem.setSubject("Aviso: Troca de Óleo Vencendo - Veículo " + placa);
-        
-        mensagem.setText("Olá, " + nomeCliente + "!\n\n"
-                + "Já faz 1 ano desde a sua última troca de óleo do veículo " + modelo + " (Placa: " + placa + ") conosco. "
-                + "Para manter o motor funcionando perfeitamente, passe na Cireve Mecânica Diesel para uma revisão.\n\n"
-                + "Entre em contato pelo WhatsApp pelo número (41) 99695-9501.\n\n" 
-                + "Endereço: Rodovia BR-277, KM 120, S/N - Jardim Bela Vista.");
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            
+            helper.setTo(emailDestino);
+            helper.setSubject("Aviso: Troca de Óleo Vencendo - Veículo " + placa);
+            
+            String linkWhatsApp = "https://wa.me/5541996959501";
+            String linkMaps = "https://www.google.com/maps/search/?api=1&query=Rodovia+BR-277,+KM+120,+Jardim+Bela+Vista";
 
-        mailSender.send(mensagem);
-        System.out.println("E-mail enviado para: " + emailDestino + " | Veículo: " + placa);
+            String htmlMsg = "<p>Olá, <strong>" + nomeCliente + "</strong>!</p>"
+                    + "<p>Já faz 1 ano desde a sua última troca de óleo do veículo <strong>" + modelo + "</strong> (Placa: <strong>" + placa + "</strong>) conosco. "
+                    + "Para manter o motor funcionando perfeitamente, passe na Cireve Mecânica Diesel para uma revisão.</p>"
+                    + "<p>Entre em contato clicando nos links abaixo:</p>"
+                    + "<p>📱 <strong>WhatsApp:</strong> <a href='" + linkWhatsApp + "' target='_blank'>Conversar com a mecânica (41 99695-9501)</a></p>"
+                    + "<p>📍 <strong>Endereço:</strong> <a href='" + linkMaps + "' target='_blank'>Abrir no Google Maps</a><br>"
+                    + "Rodovia BR-277, KM 120, S/N - Jardim Bela Vista.</p>";
+
+            helper.setText(htmlMsg, true);
+
+            mailSender.send(mimeMessage);
+            System.out.println("E-mail enviado para: " + emailDestino + " | Veículo: " + placa);
+            
+        } catch (MessagingException e) {
+            System.err.println("Falha ao enviar e-mail HTML para " + emailDestino);
+            e.printStackTrace();
+        }
     }
 }
