@@ -1,29 +1,35 @@
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="pt-br" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home - Mecanica Diesel</title>
+    <link rel="stylesheet" href="/css/style-home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-home">
+        <div th:replace="~{fragments/componentes :: sidebar}"></div>
 
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Home - Mecanica Diesel</title>
-        <link rel="stylesheet" href="/css/style-home.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    </head>
+        <main class="conteudo-principal">
+            <h1>Trocas de Óleo - Há 1 ano</h1>
+            <p class="text-muted">Lista de serviços realizados exatamente no dia de hoje, um ano atrás.</p>
+            
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Veículo (Placa)</th>
+                        <th>Data do Serviço</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaHomeBody">
+                    </tbody>
+            </table>
+        </main>
+    </div>
 
-    <body>
-        <div class="container-home">
-            <div th:replace="~{fragments/componentes :: sidebar}"></div>
-
-
-            <main class="conteudo-principal">
-                <h1>Conteúdo da Página</h1>
-                <p>O texto principal do seu site fica aqui.</p>
-            </main>
-        </div>
-
-
-
-        <script src="/js/script.js"></script>
-    </body>
-
+    <script src="/js/scriptHome.js"></script>
+</body>
 </html>

@@ -11,11 +11,6 @@ public class LayoutController {
         return "login";
     }
 
-    @GetMapping("/perfil")
-    public String telaPerfil() {
-        return "perfil";
-    }
-
     @GetMapping("/home")
     public String telaHome() {
         return "home";
