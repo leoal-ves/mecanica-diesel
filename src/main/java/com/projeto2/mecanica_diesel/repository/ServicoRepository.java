@@ -1,7 +1,9 @@
 package com.projeto2.mecanica_diesel.repository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.projeto2.mecanica_diesel.model.Servico;
 import com.projeto2.mecanica_diesel.dto.ServicoDTO;
@@ -18,4 +20,6 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
            "JOIN Veiculo v ON s.id_veiculo = v.id")
     List<ServicoDTO> findAllComDados();
     List<Servico> findByDescricaoContainingIgnoreCaseAndDataServico(String descricao, LocalDate data);
+    @Query("SELECT s FROM Servico s WHERE s.id_veiculo = :idVeiculo AND LOWER(s.descricao) LIKE LOWER(CONCAT('%', :palavra, '%')) ORDER BY s.dataServico DESC")
+    List<Servico> buscarUltimoServicoPorVeiculoEDescricao(@Param("idVeiculo") Long idVeiculo, @Param("palavra") String palavra);
 }

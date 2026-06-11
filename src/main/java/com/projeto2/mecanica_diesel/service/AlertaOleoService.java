@@ -3,7 +3,6 @@ package com.projeto2.mecanica_diesel.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,8 @@ public class AlertaOleoService {
             Veiculo veiculo = veiculoRepository.findById(servico.getId_veiculo()).orElse(null);
             
             if (cliente != null && cliente.getEmail() != null && veiculo != null) {
-                enviarEmail(cliente.getEmail(), cliente.getNome(), veiculo.getPlaca(), veiculo.getModelo());
+                String motivo = "Já faz 1 ano desde a sua última troca de óleo do veículo <strong>" + veiculo.getModelo() + "</strong> (Placa: <strong>" + veiculo.getPlaca() + "</strong>) conosco.";
+                enviarEmail(cliente.getEmail(), cliente.getNome(), veiculo.getPlaca(), veiculo.getModelo(), motivo);
                 
                 servico.setAvisoEnviado(true);
                 servicoRepository.save(servico);
@@ -52,7 +52,7 @@ public class AlertaOleoService {
         }
     }
 
-    private void enviarEmail(String emailDestino, String nomeCliente, String placa, String modelo) {
+    public void enviarEmail(String emailDestino, String nomeCliente, String placa, String modelo, String motivo) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -64,8 +64,7 @@ public class AlertaOleoService {
             String linkMaps = "https://www.google.com/maps/search/?api=1&query=Rodovia+BR-277,+KM+120,+Jardim+Bela+Vista";
 
             String htmlMsg = "<p>Olá, <strong>" + nomeCliente + "</strong>!</p>"
-                    + "<p>Já faz 1 ano desde a sua última troca de óleo do veículo <strong>" + modelo + "</strong> (Placa: <strong>" + placa + "</strong>) conosco. "
-                    + "Para manter o motor funcionando perfeitamente, passe na Cireve Mecânica Diesel para uma revisão.</p>"
+                    + "<p>" + motivo + " Para manter o motor funcionando perfeitamente, passe na Cireve Mecânica Diesel para uma revisão.</p>"
                     + "<p>Entre em contato clicando nos links abaixo:</p>"
                     + "<p>📱 <strong>WhatsApp:</strong> <a href='" + linkWhatsApp + "' target='_blank'>Conversar com a mecânica (41 99695-9501)</a></p>"
                     + "<p>📍 <strong>Endereço:</strong> <a href='" + linkMaps + "' target='_blank'>Abrir no Google Maps</a><br>"
