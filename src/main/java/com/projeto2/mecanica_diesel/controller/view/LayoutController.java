@@ -11,11 +11,6 @@ public class LayoutController {
         return "login";
     }
 
-    @GetMapping("/perfil")
-    public String telaPerfil() {
-        return "perfil";
-    }
-
     @GetMapping("/home")
     public String telaHome() {
         return "home";
@@ -31,9 +26,19 @@ public class LayoutController {
         return "servicos";
     }
 
+    @GetMapping("/servicos/novo")
+    public String telaNovoServico() {
+        return "servicosForm";
+    }
+
     @GetMapping("/veiculos")
     public String telaVeiculos() {
         return "veiculos";
+    }
+
+    @GetMapping("/veiculos/novo")
+    public String telaNovoVeiculo() {
+        return "veiculoForm";
     }
 
     @GetMapping("/clientes/novo")

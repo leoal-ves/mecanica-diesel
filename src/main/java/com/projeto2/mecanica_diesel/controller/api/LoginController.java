@@ -1,36 +1,33 @@
 package com.projeto2.mecanica_diesel.controller.api;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.projeto2.mecanica_diesel.model.Usuario;
 import com.projeto2.mecanica_diesel.service.UsuarioService;
-
+import com.projeto2.mecanica_diesel.service.TokenService;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
+    
     private final UsuarioService usuarioService;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        if (usuarioService.login(usuario).isPresent()) {
-            return ResponseEntity.ok().build();
+        Optional<Usuario> usuarioAutenticado = usuarioService.login(usuario);
+        
+        if (usuarioAutenticado.isPresent()) {
+            String token = tokenService.gerarToken(usuarioAutenticado.get());
+            
+            return ResponseEntity.ok(Map.of("token", token));
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(Map.of("erro", "Credenciais inválidas"));
         }
     }
-
-    @GetMapping("/logout")
-    public String logout() {
-        // Aqui você pode adicionar lógica para invalidar a sessão do usuário, se
-        // necessário
-        return "redirect:/login"; // Redireciona para a página de login após o logout
-    }
-
 }
