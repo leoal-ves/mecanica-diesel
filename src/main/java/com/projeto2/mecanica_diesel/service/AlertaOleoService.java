@@ -27,7 +27,7 @@ public class AlertaOleoService {
     private final JavaMailSender mailSender;
 
     // roda todos os dias as 8 da manhã
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 0 8 * * *")
     public void verificarOleoVencido() {
         LocalDate umAnoAtras = LocalDate.now().minusYears(1);
         List<Servico> servicosOleo = servicoRepository.findByDescricaoContainingIgnoreCaseAndDataServico("oleo", umAnoAtras);
@@ -58,7 +58,8 @@ public class AlertaOleoService {
         mensagem.setText("Olá, " + nomeCliente + "!\n\n"
                 + "Já faz 1 ano desde a sua última troca de óleo do veículo " + modelo + " (Placa: " + placa + ") conosco. "
                 + "Para manter o motor funcionando perfeitamente, passe na Cireve Mecânica Diesel para uma revisão.\n\n"
-                + "Abraços da equipe!");
+                + "Entre em contato pelo WhatsApp pelo número (41) 99695-9501.\n\n" 
+                + "Endereço: Rodovia BR-277, KM 120, S/N - Jardim Bela Vista.");
 
         mailSender.send(mensagem);
         System.out.println("E-mail enviado para: " + emailDestino + " | Veículo: " + placa);
