@@ -41,6 +41,11 @@ public class LayoutController {
         return "veiculos";
     }
 
+    @GetMapping("/veiculos/novo")
+    public String telaNovoVeiculo() {
+        return "veiculoForm";
+    }
+
     @GetMapping("/clientes/novo")
     public String telaNovoCliente() {
         return "clienteForm";
