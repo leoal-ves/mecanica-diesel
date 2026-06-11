@@ -1,26 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
 
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Serviços</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Serviços - Mecanica Diesel</title>
         <link rel="stylesheet" href="/css/style-home.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <body>
         <div class="container-home">
             <div th:replace="~{fragments/componentes :: sidebar}"></div>
 
-
             <main class="conteudo-principal">
                 <h1>Serviços</h1>
-                <button type="button" class="btn btn-success" onclick="location.href='/servicos/novo'">Novo
-                    Serviço</button>
+                <button type="button" class="btn btn-success" onclick="location.href='/servicos/novo'">Novo Serviço</button>
+                
+                <table class="table mt-3">
+                    <thead>
+                       <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Placa</th>
+                            <th>Descrição</th>
+                            <th>Data</th>
+                            <th>Aviso</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaServicosBody">
+                        </tbody>
+                </table>
             </main>
         </div>
+
+        <script src="/js/scriptServicos.js"></script>
     </body>
 
 </html>

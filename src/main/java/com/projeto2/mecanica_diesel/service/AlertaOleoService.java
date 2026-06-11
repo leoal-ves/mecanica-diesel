@@ -27,7 +27,7 @@ public class AlertaOleoService {
     private final JavaMailSender mailSender;
 
     // roda todos os dias as 8 da manhã
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(fixedRate = 10000)
     public void verificarOleoVencido() {
         LocalDate umAnoAtras = LocalDate.now().minusYears(1);
         List<Servico> servicosOleo = servicoRepository.findByDescricaoContainingIgnoreCaseAndDataServico("oleo", umAnoAtras);
