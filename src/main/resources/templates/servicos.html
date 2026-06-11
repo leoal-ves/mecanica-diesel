@@ -15,6 +15,11 @@
 
             <main class="conteudo-principal">
                 <h1>Serviços</h1>
+                <div class="mb-4 d-flex align-items-center gap-2">
+                    <label class="form-label mb-0">Filtrar por Data:</label>
+                    <input type="date" id="filtroData" class="form-control" style="max-width: 200px;">
+                    <button id="btnLimpar" class="btn btn-secondary">Limpar</button>
+                </div>
                 <button type="button" class="btn btn-success" onclick="location.href='/servicos/novo'">Novo Serviço</button>
                 
                 <table class="table mt-3">
