@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clienteSelect = document.getElementById('clienteSelect');
     const veiculoSelect = document.getElementById('veiculoSelect');
     const formServico = document.getElementById('formServico');
+    const loadingOverlay = document.getElementById('loadingOverlay');
 
     fetch('/api/clientes', { headers: { 'Authorization': `Bearer ${token}` } })
         .then(res => res.json())
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadVehicles(data.id_cliente, data.id_veiculo);
     }
 
-    formServico.onsubmit = (e) => {
+    formServico.onsubmit = async (e) => {
         e.preventDefault();
         
         const method = idServico ? 'PUT' : 'POST';
@@ -68,16 +69,30 @@ document.addEventListener("DOMContentLoaded", () => {
             quilometragem: kmValor
         };
 
-        fetch(url, {
-            method: method,
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(servico)
-        }).then(() => {
-            alert('Serviço salvo com sucesso!');
-            window.location.href = '/servicos';
-        });
+        loadingOverlay.classList.remove('d-none');
+        loadingOverlay.classList.add('d-flex');
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(servico)
+            });
+
+            if (response.ok) {
+                alert('Serviço salvo com sucesso!');
+                window.location.href = '/servicos';
+            } else {
+                throw new Error('Falha ao salvar no servidor.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
+            loadingOverlay.classList.remove('d-flex');
+            loadingOverlay.classList.add('d-none');
+        }
     };
 });
